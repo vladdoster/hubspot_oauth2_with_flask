@@ -1,162 +1,87 @@
+import logging
 import os
-from pathlib import Path
 
-from dotenv import load_dotenv, find_dotenv
-from flask import Flask, redirect, url_for, render_template, flash
-from flask_dance.consumer import OAuth2ConsumerBlueprint, oauth_authorized, oauth_error
-from flask_dance.consumer.backend.sqla import OAuthConsumerMixin, SQLAlchemyBackend
-from flask_login import (
-    LoginManager, UserMixin, current_user,
-    login_required, login_user, logout_user
-)
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm.exc import NoResultFound
+from dotenv import load_dotenv
+from flask import Flask, request, redirect, session, url_for, flash
+from flask.json import jsonify
+from requests_oauthlib import OAuth2Session
+
+# Set logging to debug
+logging.basicConfig(level=logging.DEBUG)
 
 # Load env variables from .env
 load_dotenv()
-# setup Flask application
-app = Flask(__name__, instance_relative_config=True)
-app.secret_key = 'secret'
-blueprint = OAuth2ConsumerBlueprint(
-    "hubspot", __name__,
-    scope=['oauth', ],
-    client_id=str(os.getenv('HUBSPOT_CLIENT_ID')),
-    client_secret=str(os.getenv('HUBSPOT_CLIENT_SECRET')),
-    token_url="https://api.hubapi.com/oauth/v1/token",
-    redirect_uri='https://musings.vdoster.com',
-    authorization_url='https://app.hubspot.com/oauth/authorize',
-)
+app = Flask(__name__)
+app.secret_key = os.urandom(24).__str__()
 
-app.register_blueprint(blueprint, url_prefix="/login")
+# This information is obtained upon registration of a new GitHub OAuth
+# application here: https://github.com/settings/applications/new
+client_id = os.getenv('HUBSPOT_CLIENT_ID')
+client_secret = os.getenv('HUBSPOT_CLIENT_SECRET')
+authorization_base_url = 'https://app.hubspot.com/oauth/authorize'
+token_url = 'https://api.hubapi.com/oauth/v1/token'
+scope = ["contacts", "oauth"]
+redirect_uri = 'http://localhost:5000/callback'
 
-# setup database models
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hubspot_oauth.db'
-db = SQLAlchemy(app)
+@app.route("/", methods=["GET"])
+def demo():
+    """Step 1: User Authorization.
 
+    Redirect the user/resource owner to the OAuth provider (i.e. Github)
+    using an URL with a few key OAuth parameters.
+    """
+    hubspot = OAuth2Session(client_id, scope=scope, redirect_uri=redirect_uri)
+    authorization_url, state = hubspot.authorization_url(authorization_base_url)
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(256), unique=True)
-    email = db.Column(db.String(256), unique=True)
-    name = db.Column(db.String(256))
-
-
-class OAuth(OAuthConsumerMixin, db.Model):
-    provider_user_id = db.Column(db.String(256), unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    user = db.relationship(User)
+    # State is used to prevent CSRF, keep this for later.
+    session['oauth_state'] = state
+    return redirect(authorization_url)
 
 
-# setup Login Manager
-login_manager = LoginManager()
-login_manager.login_view = 'hubspot.login'
+# Step 2: User authorization, this happens on the provider.
+
+@app.route("/callback", methods=["GET"])
+def callback():
+    """ Step 3: Retrieving an access token.
+
+    The user has been redirected back from the provider to your registered
+    callback URL. With this redirection comes an authorization code included
+    in the redirect URL. We will use that to obtain an access token.
+    """
+
+    code = request.values.get('code')
+    hubspot = OAuth2Session(client_id, state=session['oauth_state'])
+    token = hubspot.fetch_token(token_url, method='POST',
+                                client_secret=client_secret,
+                                authorization_response=request.url,
+                                body=f"grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}"
+                                )
+
+    # At this point you can fetch protected resources but lets save
+    # the token and show how this is done from a persisted token
+    # in /profile.
+    session['oauth_token'] = token
+
+    return redirect(url_for('.get_token_info'))
+
+@app.route("/token_info", methods=['GET'])
+def get_token_info():
+    hubspot = OAuth2Session(client_id, token=session['oauth_token'])
+    data = jsonify(hubspot.get('https://api.hubapi.com/oauth/v1/refresh-tokens/:token').json())
+    flash(data)
+    return data
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+@app.route("/contacts", methods=["GET"])
+def contacts():
+    """Fetching a protected resource using an OAuth 2 token.
+    """
+    hubspot = OAuth2Session(client_id, token=session['oauth_token'])
+    return jsonify(hubspot.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all').json())
 
-
-# setup SQLAlchemy backend
-blueprint.backend = SQLAlchemyBackend(OAuth, db.session, user=current_user)
-
-
-# create/Login Local user on Succesful OAuth Login
-@app.route("/callback")
-@oauth_authorized.connect_via(sender=blueprint)
-def hubspot_logged_in(blueprint, token):
-    print(f"Hubspot logged in!")
-    if not token:
-        print("TOKEN MISSING")
-        return False
-
-    resp = blueprint.session.get("/user")
-    if not resp.ok:
-        print("Response NOT OK")
-        return False
-
-    hubspot_info = resp.json()
-    hubspot_user_id = str(hubspot_info["id"])
-
-    # Find this OAuth token in the database, or create it
-    query = OAuth.query.filter_by(
-        provider=blueprint.name,
-        provider_user_id=hubspot_user_id,
-    )
-    try:
-        oauth = query.one()
-    except NoResultFound:
-        oauth = OAuth(
-            provider=blueprint.name,
-            user_id=hubspot_user_id,
-            token=token,
-        )
-
-    if oauth.user:
-        login_user(oauth.user)
-        flash("Successfully signed in with Hubspot.")
-    else:
-        # Create a new local user account for this user
-        user = User(
-            # Remember that 'email' can be None, if the user declines
-            email=hubspot_info["email"],
-            name=hubspot_info["name"],
-        )
-        oauth.user = user
-        db.session.add_all([user, oauth])
-        db.session.commit()
-        login_user(user)
-        flash("Successfully signed in with hubspot")
-
-    # Disable Flask-Dance's default behavior for saving the OAuth token
-    return False
-
-
-# notify on Oauth provider error
-@oauth_error.connect_via(blueprint)
-def hubspot_error(blueprint, error, error_description=None, error_uri=None):
-    msg = (
-        "OAuth error from {name}! "
-        "error={error} description={description} url={uri}"
-    ).format(
-        name=blueprint.name,
-        error=error,
-        description=error_description,
-        uri=error_uri,
-    )
-    flash(msg, category="error")
-
-
-@app.route("/login")
-@login_required
-def login():
-    flash("You have logged in")
-    return redirect(url_for("index"))
-
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    flash("You have logged out")
-    return redirect(url_for("index"))
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
-# hook up extensions to app
-db.init_app(app)
-login_manager.init_app(app)
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        db.session.commit()
-        print("Database tables created")
-    env_path = Path('.') / '.env'
-    load_dotenv(find_dotenv())
-    app.run(debug=True, host='127.0.0.1', port=5000,
-            ssl_context='adhoc')
+    # This allows us to use a plain HTTP callback
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
+    session.init_app(app)
+    app.run(debug=True)
