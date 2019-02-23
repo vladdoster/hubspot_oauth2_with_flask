@@ -17,6 +17,18 @@ Have Python 3 installed on system
 
 `cd hubspot_oauth2_with_flask/`
 
+`cd src/`
+
+ Make a file called .env
+ 
+ Add the following
+ 
+ HUBSPOT_CLIENT_ID=YOUR_CLIENT_ID_HERE
+ 
+ HUBSPOT_CLIENT_SECRET=YOUR_CLIENT_SECRET_HERE
+ 
+ Save the file
+
 `python3 -m venv venv/`
 
 `source venv/bin/activate`
