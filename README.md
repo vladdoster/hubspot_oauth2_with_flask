@@ -9,8 +9,6 @@ Requirements:
 Finished product:
 Basic user login setup using hubspot Oauth.
 
-# Instructions to run
-
 ## Pre-requisites
 Have Python 3 installed on system
 
