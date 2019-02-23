@@ -25,7 +25,7 @@ Have Python 3 installed on system
 
 You should see a (venv) infront of your current shell line to indicate it is active
 
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 `export FLASK_APP=src/app.py`
 
