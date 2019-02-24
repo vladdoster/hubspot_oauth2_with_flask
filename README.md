@@ -1,13 +1,6 @@
 # hubspot_oauth2_with_flask
 
-Requirements:
-- Requests-OAuthlib
-- Flask login
-- Flask Alchemy
-- Hubspot Oauth
-
-Finished product:
-Basic user login setup using hubspot Oauth.
+Basic user login setup for Hubspot Oauth using Requests-OAuthlib.
 
 ## Pre-requisites
 Have Python 3 installed on system
