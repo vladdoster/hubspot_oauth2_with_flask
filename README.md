@@ -12,6 +12,10 @@ Fill out .env file in src/ with credentials
 
 `cd hubspot_oauth2_with_flask/`
 
+Generate https certs to appease OAuth2 HTTPS requirement
+
+`openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
+
 `python3 -m venv venv/`
 
 `source venv/bin/activate`
@@ -22,6 +26,6 @@ You should see a (venv) infront of your current shell line to indicate it is act
 
 `export FLASK_APP=src/app.py`
 
-`flask run`
+`flask run --cert cert.pem --key key.pem`
 
-Direct a browser towards `localhost:5000` and it should do the rest!
+Direct a browser towards `https://127.0.0.1:5000` and it should do the rest!
