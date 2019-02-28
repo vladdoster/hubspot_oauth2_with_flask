@@ -22,3 +22,4 @@ urllib3==1.24.1
 URLObject==2.4.3
 Werkzeug==0.14.1
 python-dotenv
+pyopenssl

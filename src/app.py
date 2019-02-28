@@ -11,6 +11,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Load env variables from .env
 load_dotenv()
+
+from OpenSSL import SSL
+
+context = SSL.Context(SSL.SSLv23_METHOD)
+context.use_privatekey_file('key.pem')
+context.use_certificate_file('cert.pem')
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24).__str__()
 
@@ -21,7 +28,7 @@ client_secret = os.getenv('HUBSPOT_CLIENT_SECRET')
 authorization_base_url = 'https://app.hubspot.com/oauth/authorize'
 token_url = 'https://api.hubapi.com/oauth/v1/token'
 scope = ["contacts", "oauth"]
-redirect_uri = 'http://localhost:5000/callback'
+redirect_uri = 'https://127.0.0.1:5000/callback'
 
 
 @app.route("/", methods=["GET"])
@@ -68,9 +75,9 @@ def callback():
 @app.route("/token_info", methods=['GET'])
 def get_token_info():
     hubspot = OAuth2Session(client_id, token=session['oauth_token'])
-    data = jsonify(hubspot.get('https://api.hubapi.com/oauth/v1/refresh-tokens/:token').json())
+    data = hubspot.get('https://api.hubapi.com/oauth/v1/refresh-tokens/:token').json()
     flash(data)
-    return data
+    return jsonify(message=data)
 
 
 @app.route("/contacts", methods=["GET"])
@@ -83,6 +90,7 @@ def contacts():
 
 if __name__ == "__main__":
     # This allows us to use a plain HTTP callback
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
+    # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
     session.init_app(app)
-    app.run(debug=True)
+    # app.run(debug=True, ssl_context='adhoc')
+    app.run(debug=True, ssl_context=context)
