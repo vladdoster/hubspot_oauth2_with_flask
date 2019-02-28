@@ -23,6 +23,7 @@ token_url = 'https://api.hubapi.com/oauth/v1/token'
 scope = ["contacts", "oauth"]
 redirect_uri = 'http://localhost:5000/callback'
 
+
 @app.route("/", methods=["GET"])
 def demo():
     """Step 1: User Authorization.
@@ -54,8 +55,7 @@ def callback():
     token = hubspot.fetch_token(token_url, method='POST',
                                 client_secret=client_secret,
                                 authorization_response=request.url,
-                                body=f"grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redirect_uri}&code={code}"
-                                )
+                                body="grant_type=authorization_code&client_id=" + client_id + "&client_secret=" + client_secret + "&redirect_uri=" + redirect_uri + "&code=" + code)
 
     # At this point you can fetch protected resources but lets save
     # the token and show how this is done from a persisted token
@@ -63,6 +63,7 @@ def callback():
     session['oauth_token'] = token
 
     return redirect(url_for('.get_token_info'))
+
 
 @app.route("/token_info", methods=['GET'])
 def get_token_info():
