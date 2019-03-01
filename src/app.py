@@ -1,10 +1,12 @@
 import logging
 import os
+from pathlib import PureWindowsPath
 
 from dotenv import load_dotenv
 from flask import Flask, request, redirect, session, url_for, flash
 from flask.json import jsonify
 from requests_oauthlib import OAuth2Session
+from OpenSSL import SSL
 
 # Set logging to debug
 logging.basicConfig(level=logging.DEBUG)
@@ -12,11 +14,9 @@ logging.basicConfig(level=logging.DEBUG)
 # Load env variables from .env
 load_dotenv()
 
-from OpenSSL import SSL
-
 context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('key.pem')
-context.use_certificate_file('cert.pem')
+context.use_privatekey_file("key.pem")
+context.use_certificate_file("cert.pem")
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).__str__()
