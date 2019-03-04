@@ -48,6 +48,8 @@ Apply migrations to db
 
 `flask db upgrade`
 
+Run app
+
 `flask run --cert cert.pem --key key.pem`
 
 Direct a browser towards `https://127.0.0.1:5000` and it should do the rest!
