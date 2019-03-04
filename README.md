@@ -1,4 +1,4 @@
-[![HitCount](http://hits.dwyl.io/vladdoster/hubspot_oauth2_with_flask.svg)](http://hits.dwyl.io/vladdoster/hubspot_oauth2_with_flask) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![made-with-python](https://img.shields.io/badge/Made%20with-Python3-1f425f.svg)](https://www.python.org/)
+[![HitCount](http://hits.dwyl.io/vladdoster/hubspot_oauth2_with_flask.svg)](http://hits.dwyl.io/vladdoster/hubspot_oauth2_with_flask) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![made-with-python](https://img.shields.io/badge/Made%20with-Python3-1f425f.svg)](https://www.python.org/)
 
 
 
