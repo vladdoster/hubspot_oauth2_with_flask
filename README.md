@@ -24,7 +24,25 @@ You should see a (venv) infront of your current shell line to indicate it is act
 
 `pip3 install -r requirements.txt`
 
+If on Unix system:
+
 `export FLASK_APP=src/app.py`
+
+If on Windows:
+
+`set FLASK_APP=src/app.py`
+
+Initialize DB
+
+`flask db init`
+
+Create migrations
+
+`flask db migrate`
+
+Apply migrations to db
+
+`flask db upgrade`
 
 `flask run --cert cert.pem --key key.pem`
 

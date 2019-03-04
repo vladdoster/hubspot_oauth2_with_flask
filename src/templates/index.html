@@ -6,8 +6,15 @@
 </head>
 <body>
 <center>
-    <button><a href="/login">Login</a></button>
-    <button><a href="/logout">Logout</a></button>
+    <h1>Hi, {{ current_user.username }}!</h1>
+    <h3>You are logged in!</h3>
+
+    <h3>Test Hubspot Oauth Flow</h3>
+    <button><a href="{{ url_for('hubspot_oauth.hubspot_login') }}">Hubspot Login</a></button>
+</center>
+<br>
+<center>
+    <button><a href="{{ url_for('auth.logout') }}">Logout</a></button>
 </center>
 </body>
 </html>
