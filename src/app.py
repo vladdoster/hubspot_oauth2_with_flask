@@ -13,11 +13,11 @@
 import logging
 import os
 
-from OpenSSL import SSL
 # 3rd Party libs
 from dotenv import load_dotenv
 from flask import Flask, request, redirect, session, url_for, flash, render_template
 from requests_oauthlib import OAuth2Session
+
 
 # Set logging to debug
 logging.basicConfig(level=logging.DEBUG)
@@ -25,10 +25,12 @@ logging.basicConfig(level=logging.DEBUG)
 # Load env variables from .env
 load_dotenv()
 
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('key.pem')
-context.use_certificate_file('cert.pem')
+# Set HTTPS
+# context = SSL.Context(SSL.SSLv23_METHOD)
+# context.use_privatekey_file("key.pem")
+# context.use_certificate_file("cert.pem")
 
+# Instantiate app
 app = Flask(__name__)
 app.secret_key = os.urandom(24).__str__()
 
@@ -127,10 +129,6 @@ def get_token_info():
 #     hubspot = OAuth2Session(client_id, token=session['oauth_token'])
 #     return jsonify(hubspot.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all').json())
 
-
 if __name__ == "__main__":
-    # This allows us to use a plain HTTP callback
-    # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
     session.init_app(app)
-    # app.run(debug=True, ssl_context='adhoc')
     app.run(debug=True, ssl_context=context)
