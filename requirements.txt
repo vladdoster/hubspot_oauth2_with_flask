@@ -1,3 +1,4 @@
+dotenv
 blinker==1.4
 certifi==2018.11.29
 chardet==3.0.4

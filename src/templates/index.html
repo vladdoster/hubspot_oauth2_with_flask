@@ -3,11 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Hubspot Oauth Example</title>
+    <!-- Materialize: Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 <body>
-<center>
-    <button><a href="/login">Login</a></button>
-    <button><a href="/logout">Logout</a></button>
-</center>
+<div class="container">
+    <div class="row center-align">
+        <div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <h4>Hubspot Oauth Login</h4>
+            <a class="waves-effect waves-teal btn-large" href="/login">Login</a>
+            {% if context and  context.get("user") %}
+            <h6>Welcome, {{ context.get("user") }}</h6>
+            {% endif %}
+            {% if session['oauth_token'] %}
+            <ul class="collection">
+                <li class="collection-item avatar">
+                    <span class="title"><b>Access Token:</b></span>
+                    <p style="word-wrap: break-word">{{ session['oauth_token'].get("access_token") }}</p>
+                </li>
+                <li class="collection-item avatar">
+                    <span class="title"><b>Refresh Token:</b></span>
+                    <p>{{ session['oauth_token'].get("refresh_token") }}</p>
+                    <a class="waves-effect waves-teal btn-small" href="/refresh_token">Refresh access token</a>
+                </li>
+            </ul>
+            {% else %}
+            <p>Try logging in to Hubspot!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 </body>
 </html>
