@@ -55,3 +55,6 @@ Direct a browser towards `https://127.0.0.1:5000`!
 ### Having issues?
 
 Please open an issue or contact me directly: `mvdoster@gmail.com`
+
+If this helped you, leave a 🌟!
+
