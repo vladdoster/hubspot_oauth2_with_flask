@@ -2,7 +2,9 @@
 
 # hubspot_oauth2_with_flask
 
-Basic user login setup for Hubspot Oauth using Requests-OAuthlib.
+OAuth 2.0 allows a user to authorize your app to work with specific tools in their HubSpot account, designated by the authorization scopes you set.
+
+**Note: This app by default only asks to have oauth scope.
 
 ## Pre-requisites
 Have Python 3 installed on system
@@ -18,7 +20,7 @@ You should generate your own HTTPS certificates:
 
 Run following to generate https certs for OAuth2 HTTPS requirement
 
-*Note: Linux users install OpenSSL via system package manager and Windows users need to install OpenSSL via a .exe
+**Note: Linux users install OpenSSL via system package manager and Windows users need to install OpenSSL via a .exe
 
 `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`
 
