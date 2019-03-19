@@ -34,6 +34,8 @@ Then, create a virtual env and activate it
 
 You should see a (venv) infront of your current shell line to indicate it is active
 
+ex. `(venv)user@ubuntu$`
+
 Now install the project requirements
 
 `pip install -r requirements.txt`
