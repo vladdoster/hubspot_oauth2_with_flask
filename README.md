@@ -4,7 +4,7 @@
 
 OAuth 2.0 allows a user to authorize your app to work with specific tools in their HubSpot account, designated by the authorization scopes you set.
  
-**Note:** This app by default only asks to have oauth scope.
+**Note:** This app by default only passes `oauth` scope when logging in users. You will need to add the appropriate scope to take advantage of other tools that a user might have. More about that [here](https://developers.hubspot.com/docs/methods/oauth2/initiate-oauth-integration#scopes)
 
 ## Pre-requisites
 Have Python 3 installed on system
