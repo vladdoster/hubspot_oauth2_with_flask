@@ -34,7 +34,7 @@ client_id = os.getenv('HUBSPOT_CLIENT_ID')
 client_secret = os.getenv('HUBSPOT_CLIENT_SECRET')
 authorization_base_url = 'https://app.hubspot.com/oauth/authorize'
 token_url = 'https://api.hubapi.com/oauth/v1/token'
-scope = ["contacts", "oauth"]
+scope = ["oauth"]
 redirect_uri = 'https://127.0.0.1:5000/callback'
 
 @app.route("/", methods=["GET"])
