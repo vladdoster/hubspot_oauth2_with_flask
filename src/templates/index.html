@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Hubspot Oauth Example</title>
+    <link rel="shortcut icon" href="https://academy.hubspot.com/hubfs/sprocket-web-color-1.png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="parent">
 <div class="child">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+
+    {% for message in messages %}
+    <p style="background-color: red; border: solid black;">{{ message }}</p>
+    {% endfor %}
+
             {% endif %}
             {% endwith %}
+    <img class="logo" src="//static.hsappstatic.net/unified-navigation-ui/static-1.787/images/icons/sprocket.svg"
+         style="height: 50px; width: 50px;" alt="Home">
             <h4>Hubspot Oauth Login</h4>
             {% if context and  context.get("user") %}
             <h6>Welcome, {{ context.get("user") }}</h6>
             {% endif %}
             {% if session['oauth_token'] %}
             <span class="title"><b>Access Token:</b></span>
-            <p style="word-wrap: break-word">{{ session['oauth_token'].get("access_token") }}</p>
+    <p style="width:300px; word-wrap: break-word">{{ session['oauth_token'].get("access_token") }}</p>
 	    <span class="title"><b>Refresh Token:</b></span>
 	    <p>{{ session['oauth_token'].get("refresh_token") }}</p>
             <a href="/refresh_token">Refresh access token</a>
+    <br>
+    <a href="/delete_refresh_token">Delete refresh token</a>
             {% else %}
 	    <a href="/login">Login</a>
             <p>Try logging in to Hubspot!</p>
