@@ -4,10 +4,9 @@
 
 OAuth 2.0 allows a user to authorize your app to work with specific tools in their HubSpot account, designated by the authorization scopes you set.
 
-<p align="center">
-  <img src="https://drive.google.com/uc?id=1nYV6UGshwYHywJVKEtgFdHQzBYWNZYJr" width="250"/>
-  <img src="https://drive.google.com/uc?id=1n-uED-nfPxFECQLpn2uApsAo-7U84q2T" width="250"/> 
-</p>
+![Login Screen](https://drive.google.com/uc?id=1nYV6UGshwYHywJVKEtgFdHQzBYWNZYJr)
+
+![Login Screen](https://drive.google.com/uc?id=1n-uED-nfPxFECQLpn2uApsAo-7U84q2T)
 
 **Note:** This app by default only passes `oauth` scope when logging in users. You will need to add the appropriate scope to take advantage of other tools that a user might have. More about that [here](https://developers.hubspot.com/docs/methods/oauth2/initiate-oauth-integration#scopes)
 
