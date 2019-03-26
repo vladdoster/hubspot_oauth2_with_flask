@@ -67,4 +67,4 @@ Please open an issue or contact me directly: `mvdoster@gmail.com`
 If this in anyway helpful, leave a 🌟 so others see it!
 
 Hiring? Need a developer?
-Email me @ mvdoster@gmail.com for my resume.
+Email me @ `mvdoster@gmail.com` for my resume.
