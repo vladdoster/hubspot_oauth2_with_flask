@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Hubspot Oauth Example</title>
-    <!-- Materialize: Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-<div class="container">
-    <div class="row center-align">
-        <div>
+<body class="parent">
+<div class="child">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul class=flashes>
@@ -20,27 +17,19 @@
             {% endif %}
             {% endwith %}
             <h4>Hubspot Oauth Login</h4>
-            <a class="waves-effect waves-teal btn-large" href="/login">Login</a>
             {% if context and  context.get("user") %}
             <h6>Welcome, {{ context.get("user") }}</h6>
             {% endif %}
             {% if session['oauth_token'] %}
-            <ul class="collection">
-                <li class="collection-item avatar">
-                    <span class="title"><b>Access Token:</b></span>
-                    <p style="word-wrap: break-word">{{ session['oauth_token'].get("access_token") }}</p>
-                </li>
-                <li class="collection-item avatar">
-                    <span class="title"><b>Refresh Token:</b></span>
-                    <p>{{ session['oauth_token'].get("refresh_token") }}</p>
-                    <a class="waves-effect waves-teal btn-small" href="/refresh_token">Refresh access token</a>
-                </li>
-            </ul>
+            <span class="title"><b>Access Token:</b></span>
+            <p style="word-wrap: break-word">{{ session['oauth_token'].get("access_token") }}</p>
+	    <span class="title"><b>Refresh Token:</b></span>
+	    <p>{{ session['oauth_token'].get("refresh_token") }}</p>
+            <a href="/refresh_token">Refresh access token</a>
             {% else %}
+	    <a href="/login">Login</a>
             <p>Try logging in to Hubspot!</p>
             {% endif %}
-        </div>
-    </div>
-</div>
+	</div>
 </body>
 </html>
