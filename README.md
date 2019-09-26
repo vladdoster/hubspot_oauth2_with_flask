@@ -71,4 +71,4 @@ Please open an issue or contact me directly: `mvdoster@gmail.com`
 If this in anyway helpful, leave a 🌟 so others see it!
 
 Hiring? Need a developer?
-I love solving problems:`mvdoster@gmail.com`
+I love solving problems.
