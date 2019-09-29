@@ -1,5 +1,4 @@
-[![Updates](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/shield.svg)](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/)
- [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![made-with-python](https://img.shields.io/badge/Made%20with-Python3-1f425f.svg)](https://www.python.org/)
+[![Updates](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/shield.svg)](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/) [![Python 3](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/python-3-shield.svg)](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 # Hubspot OAuth2 w/ Flask-OAuth-lib
 
