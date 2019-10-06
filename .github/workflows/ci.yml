@@ -1,4 +1,4 @@
-name: Python application
+name: Hubspot Oauth2 w/ Flask
 
 on: [push]
 
