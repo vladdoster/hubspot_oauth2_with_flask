@@ -1,15 +1,11 @@
-# Hubspot OAuth2 w/ Flask-OAuth-lib
-
 <div align="center">
+
+# Hubspot OAuth2 w/ Flask-OAuth-lib
   
 [![Updates](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/shield.svg)](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/) 
 [![Python 3](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/python-3-shield.svg)](https://pyup.io/repos/github/vladdoster/hubspot_oauth2_with_flask/) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]()
-
-</div>
-
-<div align="center">
 
 OAuth 2.0 allows a user to authorize your app to work with specific tools in their HubSpot account, designated by the authorization scopes you set.
 
