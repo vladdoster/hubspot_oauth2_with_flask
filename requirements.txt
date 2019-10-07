@@ -14,4 +14,4 @@ Werkzeug==0.16.0
 Pytest==5.2.1
 flask-talisman==0.7.0
 flask_sslify==0.1.5
-flask_session
+flask_session==0.3.1
