@@ -12,3 +12,4 @@ Requests-oauthlib==1.2.0
 Urllib3==1.25.6
 Werkzeug==0.16.0
 Pytest==5.1.3
+flask_sslify==0.1.5
