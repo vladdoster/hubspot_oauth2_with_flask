@@ -10,8 +10,8 @@
 import logging
 import os
 
-from flask import Blueprint
-from flask import request, redirect, session, url_for, flash, render_template
+from flask import Blueprint, app
+from flask import session, url_for, flash, render_template, request, redirect
 from oauthlib.oauth2 import MissingTokenError
 from requests_oauthlib import OAuth2Session
 
@@ -22,11 +22,10 @@ bp = Blueprint("hubspot_oauth", __name__)
 def index():
     """Index page"""
 
-    # Ser session variables for rest of requests
+    # Set session variables for rest of requests
     session["client_id"] = os.getenv("HUBSPOT_CLIENT_ID")
     session["client_secret"] = os.getenv("HUBSPOT_CLIENT_SECRET")
-    session[
-        "authorization_base_url"] = "https://app.hubspot.com/oauth/authorize"
+    session["authorization_base_url"] = "https://app.hubspot.com/oauth/authorize"
     session["token_url"] = "https://api.hubapi.com/oauth/v1/token"
     session["scope"] = ["oauth"]
     session["redirect_uri"] = "http://localhost:5000/callback"
