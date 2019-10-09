@@ -18,7 +18,7 @@
 
 ### Stack:
 
-- [Caddy](https://caddyserver.com) [(Because of recent license change)](https://github.com/caddyserver/caddy/issues/2786)
+- [Caddy](https://caddyserver.com) ([Because of recent license change](https://github.com/caddyserver/caddy/issues/2786))
 - [Docker](https://www.docker.com/) (Ease of replication)
 - [Flask](https://palletsprojects.com/p/flask/) (Don't need any batteries)
 
