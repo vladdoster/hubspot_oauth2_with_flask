@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
     File name: auth.py
     Author: Vlad Doster
@@ -12,7 +12,7 @@ import os
 
 from flask import Blueprint, app
 from flask import session, url_for, flash, render_template, request, redirect
-from oauthlib.oauth2 import MissingTokenError
+from oauthlib.oauth2 import MissingTokenError, InsecureTransportError
 from requests_oauthlib import OAuth2Session
 
 bp = Blueprint("hubspot_oauth", __name__)
@@ -28,8 +28,7 @@ def index():
     session["authorization_base_url"] = "https://app.hubspot.com/oauth/authorize"
     session["token_url"] = "https://api.hubapi.com/oauth/v1/token"
     session["scope"] = ["oauth"]
-    session["redirect_uri"] = "http://localhost:5000/callback"
-
+    session["redirect_uri"] = "https://hs-oauth.localhost/callback"
     return render_template("index.html")
 
 
@@ -50,6 +49,7 @@ def initiate_oauth2_authorization():
 
     # State is used to prevent CSRF, keep this for later.
     session["oauth_state"] = state
+    logging.debug(authorization_url)
     return redirect(authorization_url)
 
 
@@ -65,16 +65,31 @@ def callback():
 
     code = request.values.get("code")
     hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
-    token = hubspot.fetch_token(
-        session["token_url"],
-        method="POST",
-        client_secret=session["client_secret"],
-        authorization_response=request.url,
-        body=f"""grant_type=authorization_code&client_id={session["client_id"]}&client_secret={session["client_secret"]}&redirect_uri={session["redirect_uri"]}&code={code}""",
-    )
 
-    session["oauth_token"] = token
-    return redirect(url_for(".get_token_info"))
+    try:
+        https_url = request.url
+        i = request.url.find(":")
+        https_request_url = https_url[:i] + "s" + https_url[i:]
+        token = hubspot.fetch_token(
+            session["token_url"],
+            method="POST",
+            client_secret=session["client_secret"],
+            authorization_response=https_request_url,
+            body=f"""grant_type=authorization_code&client_id={session["client_id"]}&client_secret={session["client_secret"]}&redirect_uri={session["redirect_uri"]}&code={code}""",
+        )
+
+        session["oauth_token"] = token
+    except InsecureTransportError as e:
+        logging.error(
+            f"Something went wrong in the callback due to HTTPS\n" f"Error: {e}"
+        )
+        flash("Callback: error due to HTTPS")
+    except Exception as e:
+        logging.error(f"Something went wrong in the callback\n" f"Error: {e}")
+        flash("Callback: error due to unknown")
+    return redirect(
+        url_for(endpoint=".get_token_info", _scheme="https", _external=True)
+    )
 
 
 @bp.route("/refresh_token", methods=["GET"])
@@ -86,22 +101,20 @@ def refresh_token():
     new access token once the initial access token expires. """
     logging.info(session["oauth_token"].get("refresh_token"))
     try:
-        hubspot = OAuth2Session(session["client_id"],
-                                state=session["oauth_state"])
+        hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
         new_token = hubspot.refresh_token(
             session["token_url"],
-            body=f"""grant_type=refresh_token&client_id={session["client_id"]}&client_secret={session["client_secret"]}&refresh_token={
-            session["oauth_token"].get('refresh_token')}""",
+            body=f"""grant_type=refresh_token&client_id={session["client_id"]}&client_secret={session["client_secret"]}&refresh_token={session["oauth_token"].get('refresh_token')}""",
         )
         session["oauth_token"] = new_token
         flash("Token refreshed successfully!")
-        return redirect(url_for(".index"))
-    except MissingTokenError:
-        flash("Try logging in to access this resource!")
-        return redirect(url_for(".index"))
+        return redirect(url_for(".index", _scheme="https", _external=True))
+    except MissingTokenError as e:
+        flash("Try logging in to access this resource!\n" f"Errror: {e}")
+        return redirect(url_for(".index", _scheme="https", _external=True))
     except Exception as e:
         logging.error(f"Error refreshing token! {e}")
-        return redirect(url_for(".index"))
+        return redirect(url_for(".index", _scheme="https", _external=True))
 
 
 @bp.route("/token_info", methods=["GET"])
@@ -111,13 +124,15 @@ def get_token_info():
     associated with. """
     if session.get("oauth_token"):
         token_info_url = f'https://api.hubapi.com/oauth/v1/refresh-tokens/{session["oauth_token"].get("refresh_token")}'
-        hubspot = OAuth2Session(session["client_id"],
-                                state=session["oauth_state"])
+        hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
         data = hubspot.get(token_info_url)
         return render_template("index.html", context=data.json())
     else:
-        flash("Try logging in to access this resource!")
-        return redirect(url_for(".index"))
+        flash(
+            "Try logging in to access this resource!\n"
+            "Ran into an error retrieivng token in /get_token_info"
+        )
+        return redirect(url_for(".index", _scheme="https", _external=True))
 
 
 @bp.route("/delete_refresh_token", methods=["GET"])
@@ -126,14 +141,13 @@ def delete_refresh_token():
     token if a user uninstalls your app. """
     if session.get("oauth_token"):
         token_info_url = f'https://api.hubapi.com/oauth/v1/refresh-tokens/{session["oauth_token"].get("refresh_token")}'
-        hubspot = OAuth2Session(session["client_id"],
-                                state=session["oauth_state"])
+        hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
         data = hubspot.delete(token_info_url)
         if data.status_code == 204:
             flash("Refresh token successfully deleted!")
             session["oauth_token"] = None
             session["oauth_state"] = None
-            return redirect(url_for(".index"))
+            return redirect(url_for(".index", _scheme="https", _external=True))
     else:
         flash("Try logging in to access this resource!")
-        return redirect(url_for(".index"))
+        return redirect(url_for(".index", _scheme="https", _external=True))

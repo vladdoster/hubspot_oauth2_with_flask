@@ -1,33 +1,17 @@
 version: '3.1'
 services:
-    nginx:
-        image: nginx:1.13.7
-        container_name: nginx
-        depends_on:
-            - flask
-        volumes:
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf
-        networks:
-            - hubspot_oauth2_network
-        ports:
-            - 80:80
-    flask:
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        image: flask:1.1.1
-        container_name: flask
-        volumes:
-            - ./:/app/
-        environment:
-            - FLASK_APP=/app/hubspot_oauth2/
-        command: flask run --host=0.0.0.0
-        networks:
-            hubspot_oauth2_network:
-                aliases:
-                    - hs-oauth
-        ports:
-            - 5000:5000
-
-networks:
-    hubspot_oauth2_network:
+  caddy:
+    container_name: caddy
+    image: "abiosoft/caddy:latest"
+    volumes:
+      - ./certs:/root/certs
+      - ./Caddyfile:/etc/Caddyfile
+    ports:
+      - "443:2015"
+  flask:
+    build: .
+    container_name: flask
+    links:
+      - caddy
+    volumes:
+      - .:/code

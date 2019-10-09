@@ -1,0 +1,11 @@
+hs-oauth.localhost {
+
+    gzip
+    log stdout
+    tls /root/certs/hs-oauth.localhost.pem /root/certs/hs-oauth.localhost-key.pem
+
+    proxy / flask:5000 {
+        transparent
+    }
+}
+
