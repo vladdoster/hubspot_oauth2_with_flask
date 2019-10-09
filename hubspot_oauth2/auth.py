@@ -23,12 +23,16 @@ def index():
     """Index page"""
 
     # Set session variables for rest of requests
+
     session["client_id"] = os.getenv("HUBSPOT_CLIENT_ID")
     session["client_secret"] = os.getenv("HUBSPOT_CLIENT_SECRET")
-    session["authorization_base_url"] = "https://app.hubspot.com/oauth/authorize"
-    session["token_url"] = "https://api.hubapi.com/oauth/v1/token"
-    session["scope"] = ["oauth"]
-    session["redirect_uri"] = "https://hs-oauth.localhost/callback"
+    session["authorization_base_url"] = os.getenv("HUBSPOT_AUTHORIZATION_URL")
+    session["token_url"] = os.getenv("HUBSPOT_TOKEN_URL")
+    session["scope"] = os.getenv("HUBSPOT_SCOPES")
+    session["redirect_uri"] = os.getenv("HUBSPOT_REDIRECT_URI")
+
+    if session["client_id"] == "" or session["client_secret"] == "":
+        flash("Check that you set client_id and client_secret in the .env file (ಠ_ಠ)")
     return render_template("index.html")
 
 
@@ -86,7 +90,7 @@ def callback():
         flash("Callback: error due to HTTPS")
     except Exception as e:
         logging.error(f"Something went wrong in the callback\n" f"Error: {e}")
-        flash("Callback: error due to unknown")
+        flash("Callback: error due to unknown ¯\(°_o)/¯")
     return redirect(
         url_for(endpoint=".get_token_info", _scheme="https", _external=True)
     )
@@ -107,10 +111,10 @@ def refresh_token():
             body=f"""grant_type=refresh_token&client_id={session["client_id"]}&client_secret={session["client_secret"]}&refresh_token={session["oauth_token"].get('refresh_token')}""",
         )
         session["oauth_token"] = new_token
-        flash("Token refreshed successfully!")
+        flash("Token refreshed successfully! (ʘ‿ʘ)")
         return redirect(url_for(".index", _scheme="https", _external=True))
     except MissingTokenError as e:
-        flash("Try logging in to access this resource!\n" f"Errror: {e}")
+        flash("Try logging in to access this resource! ¯\(°_o)/¯\n" f"Errror: {e}")
         return redirect(url_for(".index", _scheme="https", _external=True))
     except Exception as e:
         logging.error(f"Error refreshing token! {e}")

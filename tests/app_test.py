@@ -1,8 +1,6 @@
 import pytest
 
 from hubspot_oauth2 import create_app
-
-
 @pytest.fixture
 def app():
     """Create and configure a new app instance for each test."""
@@ -11,12 +9,10 @@ def app():
 
     yield app
 
-
 @pytest.fixture
 def client(app):
     """A test client for the app."""
     return app.test_client()
-
 
 # class AuthActions(object):
 #     def __init__(self, client):

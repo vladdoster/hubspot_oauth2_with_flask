@@ -9,7 +9,6 @@ from hubspot_oauth2.auth import bp
 
 sess = Session()
 
-
 def create_app():
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
