@@ -11,28 +11,10 @@
 
 </div>
 
-<div align="center">
-### Login
-</div>
 
 <p align="center">
   <img src="https://github.com/vladdoster/hubspot_oauth2_with_flask/blob/master/docs/login.png">
-</p>
-
-<div align="center">
-### Logged in
-</div>
-
-<p align="center">
   <img src="https://github.com/vladdoster/hubspot_oauth2_with_flask/blob/master/docs/integrated.png">
-</p>
-
-<div align="center">
-### Key Refresh
-</div>
-
-<p align="center">
-  <img src="https://github.com/vladdoster/hubspot_oauth2_with_flask/blob/master/docs/refresh.png">
 </p>
 
 ### Stack:
