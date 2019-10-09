@@ -53,11 +53,11 @@ If successful, you should have a key.pem and cert.pem file in the certs/ directo
 
 docker-compose up --build
 
-6. Direct a browser towards [https://hs-oauth.localhost](https://hs-oauth.localhost)!
+#### 6. Direct a browser towards [https://hs-oauth.localhost](https://hs-oauth.localhost)!
 
 ### Having issues?
 
-Please open an issue or contact me directly: `mvdoster@gmail.com`
+Please [open an issue](https://github.com/vladdoster/hubspot_oauth2_with_flask/issues/new) or contact me directly: `mvdoster@gmail.com`
 
 If this in anyway helpful, leave a 🌟 so others see it!
 
