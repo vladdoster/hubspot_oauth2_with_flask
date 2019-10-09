@@ -112,13 +112,11 @@ def refresh_token():
         )
         session["oauth_token"] = new_token
         flash("Token refreshed successfully! (ʘ‿ʘ)")
-        return redirect(url_for(".index", _scheme="https", _external=True))
     except MissingTokenError as e:
         flash("Try logging in to access this resource! ¯\(°_o)/¯\n" f"Errror: {e}")
-        return redirect(url_for(".index", _scheme="https", _external=True))
     except Exception as e:
         logging.error(f"Error refreshing token! {e}")
-        return redirect(url_for(".index", _scheme="https", _external=True))
+    return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
 
 
 @bp.route("/token_info", methods=["GET"])
@@ -136,7 +134,7 @@ def get_token_info():
             "Try logging in to access this resource!\n"
             "Ran into an error retrieivng token in /get_token_info"
         )
-        return redirect(url_for(".index", _scheme="https", _external=True))
+        return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
 
 
 @bp.route("/delete_refresh_token", methods=["GET"])
@@ -151,7 +149,6 @@ def delete_refresh_token():
             flash("Refresh token successfully deleted!")
             session["oauth_token"] = None
             session["oauth_state"] = None
-            return redirect(url_for(".index", _scheme="https", _external=True))
     else:
         flash("Try logging in to access this resource!")
-        return redirect(url_for(".index", _scheme="https", _external=True))
+    return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
