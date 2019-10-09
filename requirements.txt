@@ -4,11 +4,11 @@ Click==7.0
 Flask==1.1.1
 Idna==2.8
 Itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.10.3
 MarkupSafe==1.1.1
 Oauthlib==3.1.0
 Python-dotenv==0.10.3
 Requests-oauthlib==1.2.0
 Urllib3==1.25.6
 Werkzeug==0.16.0
-flask_session
+flask_session==0.3.1
