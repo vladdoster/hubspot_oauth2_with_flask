@@ -26,7 +26,8 @@
 **Note:** This app by default only passes `oauth` scope when logging in users. You will need to add the appropriate scope to take advantage of other tools that a user might have. More about that [here](https://developers.hubspot.com/docs/methods/oauth2/initiate-oauth-integration#scopes)
 
 ## Pre-requisites
-Have Python 3 installed on system
+- Docker Compose 
+- Python 3
 
 ## Steps to run
 
