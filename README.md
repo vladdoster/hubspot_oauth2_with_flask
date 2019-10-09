@@ -16,11 +16,12 @@
   <img src="https://github.com/vladdoster/hubspot_oauth2_with_flask/blob/master/docs/integrated.png">
 </p>
 
-### Stack:
+### Tech Stack:
 
 - [Caddy](https://caddyserver.com) ([Because of recent license change](https://github.com/caddyserver/caddy/issues/2786))
 - [Docker](https://www.docker.com/) (Ease of replication)
 - [Flask](https://palletsprojects.com/p/flask/) (Don't need any batteries)
+- [Mkcert](https://github.com/FiloSottile/mkcert) (Easy SSL certs)
 
 **Note:** This app by default only passes `oauth` scope when logging in users. You will need to add the appropriate scope to take advantage of other tools that a user might have. More about that [here](https://developers.hubspot.com/docs/methods/oauth2/initiate-oauth-integration#scopes)
 
