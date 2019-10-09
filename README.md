@@ -51,7 +51,7 @@ Next, fill out the .env file with appropriate hubspot credentials
 
 docker-compose up --build
 
-Direct a browser towards [https//:hs-oauth.localhost](https//:hs-oauth.localhost)!
+Direct a browser towards [https://hs-oauth.localhost](https://hs-oauth.localhost)!
 
 ### Having issues?
 
