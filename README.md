@@ -31,11 +31,15 @@
 
 ## Steps to run
 
+#### 1. Clone the repository
+
 `git clone https://github.com/vladdoster/hubspot_oauth2_with_flask.git`
+
+#### 2. Change directories to cloned repository
 
 `cd hubspot_oauth2_with_flask/`
 
-You should generate your own HTTPS certificates.
+#### 3. Generate SSL certificates to appease HubSpot HTTPS requirement for oauth callback. A script has been written to aid this effort.
 
 `sh ./scripts/generate_certs`
 
@@ -43,13 +47,13 @@ You should generate your own HTTPS certificates.
 
 If successful, you should have a key.pem and cert.pem file in the certs/ directory
 
-Next, fill out the .env file with appropriate hubspot credentials
+#### 4. Set HUBSPOT_CLIENT_ID and HUBSPOT_CLIENT_SECRET in .env.
 
-### Run app
+#### 5. Run app
 
 docker-compose up --build
 
-Direct a browser towards [https://hs-oauth.localhost](https://hs-oauth.localhost)!
+6. Direct a browser towards [https://hs-oauth.localhost](https://hs-oauth.localhost)!
 
 ### Having issues?
 
