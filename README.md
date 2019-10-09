@@ -21,7 +21,9 @@
 - [Caddy](https://caddyserver.com) ([Because of recent license change](https://github.com/caddyserver/caddy/issues/2786))
 - [Docker](https://www.docker.com/) (Portability)
 - [Flask](https://palletsprojects.com/p/flask/) (Light resource usage)
+- [Github Actions](https://github.com/features/actions) (CI)
 - [Mkcert](https://github.com/FiloSottile/mkcert) (Dead simple local SSL certs)
+- [PyTest](https://docs.pytest.org/en/latest/) (Testing)
 
 **Note:** This app by default only passes `oauth` scope when logging in users. You will need to add the appropriate scope to take advantage of other tools that a user might have. More about that [here](https://developers.hubspot.com/docs/methods/oauth2/initiate-oauth-integration#scopes)
 
