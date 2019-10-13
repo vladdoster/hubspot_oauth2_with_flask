@@ -16,7 +16,7 @@
   <img src="https://github.com/vladdoster/hubspot_oauth2_with_flask/blob/master/docs/integrated.png">
 </p>
 
-### Tech Stack:
+### Stack:
 
 - [Caddy](https://caddyserver.com) ([Because of recent license change](https://github.com/caddyserver/caddy/issues/2786))
 - [Docker](https://www.docker.com/) (Portability)
