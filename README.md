@@ -9,6 +9,8 @@
 
 ### OAuth 2.0 allows a user to authorize your app to work with specific tools in their HubSpot account, designated by the authorization scopes you set.
 
+#### Note: if you want a Django version, I have contributed a hubspot integration for [django-allauth](https://github.com/pennersr/django-allauth)
+
 </div>
 
 <p align="center">
