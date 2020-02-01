@@ -4,7 +4,7 @@ Click==7.0
 Flask==1.1.1
 Idna==2.8
 Itsdangerous==1.1.0
-Jinja2==2.10.3
+Jinja2==2.11.1
 MarkupSafe==1.1.1
 Oauthlib==3.1.0
 Python-dotenv==0.10.3
