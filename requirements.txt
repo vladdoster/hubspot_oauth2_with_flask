@@ -2,7 +2,7 @@ Certifi==2019.11.28
 Chardet==3.0.4
 Click==7.0
 Flask==1.1.1
-Idna==2.8
+Idna==2.9
 Itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
