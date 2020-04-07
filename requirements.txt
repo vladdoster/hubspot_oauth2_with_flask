@@ -1,4 +1,4 @@
-Certifi==2019.11.28
+Certifi==2020.4.5.1
 Chardet==3.0.4
 Click==7.1.1
 Flask==1.1.1
