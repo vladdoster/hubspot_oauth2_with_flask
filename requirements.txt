@@ -1,4 +1,4 @@
-Certifi==2020.6.20
+Certifi==2020.11.8
 Chardet==3.0.4
 Click==7.1.2
 Flask==1.1.2
@@ -7,8 +7,8 @@ Itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 Oauthlib==3.1.0
-Python-dotenv==0.14.0
+Python-dotenv==0.15.0
 Requests-oauthlib==1.3.0
-Urllib3==1.25.10
+Urllib3==1.26.1
 Werkzeug==1.0.1
 flask_session==0.3.2
