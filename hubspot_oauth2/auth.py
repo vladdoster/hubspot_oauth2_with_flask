@@ -129,12 +129,11 @@ def get_token_info():
         hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
         data = hubspot.get(token_info_url)
         return render_template("index.html", context=data.json())
-    else:
-        flash(
-            "Try logging in to access this resource!\n"
-            "Ran into an error retrieivng token in /get_token_info"
-        )
-        return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
+    flash(
+        "Try logging in to access this resource!\n"
+        "Ran into an error retrieivng token in /get_token_info"
+    )
+    return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
 
 
 @bp.route("/delete_refresh_token", methods=["GET"])
