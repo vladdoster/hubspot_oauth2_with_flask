@@ -10,7 +10,7 @@
 import logging
 import os
 
-from flask import Blueprint, app
+from flask import Blueprint
 from flask import session, url_for, flash, render_template, request, redirect
 from oauthlib.oauth2 import MissingTokenError, InsecureTransportError
 from requests_oauthlib import OAuth2Session
