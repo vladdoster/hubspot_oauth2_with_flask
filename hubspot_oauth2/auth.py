@@ -10,7 +10,7 @@
 import logging
 import os
 
-from flask import Blueprint, app
+from flask import Blueprint
 from flask import session, url_for, flash, render_template, request, redirect
 from oauthlib.oauth2 import MissingTokenError, InsecureTransportError
 from requests_oauthlib import OAuth2Session
@@ -40,7 +40,7 @@ def index():
 def initiate_oauth2_authorization():
     """When sending the user to HubSpot's OAuth 2.0 server, first step is to
     create the authorization URL. This will identify your app, and define
-    the resources that it's requesting access to on behalf of the user. """
+    the resources that it's requesting access to on behalf of the user."""
 
     hubspot = OAuth2Session(
         session["client_id"],
@@ -65,7 +65,7 @@ def callback():
     authentication URL. If there are no issues and the user approves the
     access request, the request to the redirect URI will have a code query
     parameter attached when it's returned. If the user doesn't grant access,
-    no request will be sent. """
+    no request will be sent."""
 
     code = request.values.get("code")
     hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
@@ -102,7 +102,7 @@ def refresh_token():
     token.  Access tokens expire after 6 hours, so if you need offline
     access to data in HubSpot, you'll need to store the refresh token you
     get when initiating your OAuth integration, and use that to generate a
-    new access token once the initial access token expires. """
+    new access token once the initial access token expires."""
     logging.info(session["oauth_token"].get("refresh_token"))
     try:
         hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
@@ -123,24 +123,23 @@ def refresh_token():
 def get_token_info():
     """This can be used to get the email address of the HubSpot user that
     the token was created for, as well as the Hub ID that the token is
-    associated with. """
+    associated with."""
     if session.get("oauth_token"):
         token_info_url = f'https://api.hubapi.com/oauth/v1/refresh-tokens/{session["oauth_token"].get("refresh_token")}'
         hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
         data = hubspot.get(token_info_url)
         return render_template("index.html", context=data.json())
-    else:
-        flash(
-            "Try logging in to access this resource!\n"
-            "Ran into an error retrieivng token in /get_token_info"
-        )
-        return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
+    flash(
+        "Try logging in to access this resource!\n"
+        "Ran into an error retrieivng token in /get_token_info"
+    )
+    return redirect(url_for(endpoint=".index", _scheme="https", _external=True))
 
 
 @bp.route("/delete_refresh_token", methods=["GET"])
 def delete_refresh_token():
     """Deletes a refresh token. You can use this to delete your refresh
-    token if a user uninstalls your app. """
+    token if a user uninstalls your app."""
     if session.get("oauth_token"):
         token_info_url = f'https://api.hubapi.com/oauth/v1/refresh-tokens/{session["oauth_token"].get("refresh_token")}'
         hubspot = OAuth2Session(session["client_id"], state=session["oauth_state"])
